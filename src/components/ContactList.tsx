@@ -1,6 +1,7 @@
 
-import { Search, MoreHorizontal, Edit, MessageCircle } from "lucide-react";
+import { Search, MoreHorizontal, Edit, MessageCircle, Users } from "lucide-react";
 import { useState } from "react";
+import CreateGroupDialog from "./CreateGroupDialog";
 
 interface Contact {
   id: string;
@@ -9,15 +10,18 @@ interface Contact {
   isOnline: boolean;
   lastMessage: string;
   timestamp: string;
+  isGroup?: boolean;
+  members?: Contact[];
 }
 
 interface ContactListProps {
   contacts: Contact[];
   selectedContact: Contact;
   onSelectContact: (contact: Contact) => void;
+  onCreateGroup: (name: string, members: Contact[]) => void;
 }
 
-const ContactList = ({ contacts, selectedContact, onSelectContact }: ContactListProps) => {
+const ContactList = ({ contacts, selectedContact, onSelectContact, onCreateGroup }: ContactListProps) => {
   const [searchQuery, setSearchQuery] = useState("");
 
   const filteredContacts = contacts.filter(contact =>
@@ -65,19 +69,34 @@ const ContactList = ({ contacts, selectedContact, onSelectContact }: ContactList
           >
             <div className="flex items-center space-x-3">
               <div className="relative">
-                <img
-                  src={contact.avatar}
-                  alt={contact.name}
-                  className="w-12 h-12 rounded-full object-cover"
-                />
-                {contact.isOnline && (
-                  <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 border-2 border-white rounded-full online-pulse"></div>
+                {contact.isGroup ? (
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-r from-blue-500/20 to-purple-600/20 border border-white/20 flex items-center justify-center">
+                    <Users className="w-6 h-6 text-white/80" />
+                  </div>
+                ) : (
+                  <>
+                    <img
+                      src={contact.avatar}
+                      alt={contact.name}
+                      className="w-12 h-12 rounded-full object-cover"
+                    />
+                    {contact.isOnline && (
+                      <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 border-2 border-white rounded-full online-pulse"></div>
+                    )}
+                  </>
                 )}
               </div>
               
               <div className="flex-1 min-w-0">
                 <div className="flex items-center justify-between">
-                  <h3 className="font-semibold text-white truncate">{contact.name}</h3>
+                  <div className="flex items-center space-x-2">
+                    <h3 className="font-semibold text-white truncate">{contact.name}</h3>
+                    {contact.isGroup && (
+                      <span className="text-xs text-white/50 bg-white/10 px-2 py-0.5 rounded-full">
+                        {contact.members?.length || 0} members
+                      </span>
+                    )}
+                  </div>
                   <span className="text-xs text-white/50">{contact.timestamp}</span>
                 </div>
                 <p className="text-sm text-white/70 truncate mt-1">{contact.lastMessage}</p>
@@ -87,8 +106,12 @@ const ContactList = ({ contacts, selectedContact, onSelectContact }: ContactList
         ))}
       </div>
 
-      {/* Bottom Action */}
-      <div className="p-4 border-t border-white/10">
+      {/* Bottom Actions */}
+      <div className="p-4 border-t border-white/10 space-y-2">
+        <CreateGroupDialog 
+          contacts={contacts.filter(c => !c.isGroup)}
+          onCreateGroup={onCreateGroup}
+        />
         <button className="w-full flex items-center justify-center space-x-2 p-3 bg-gradient-to-r from-blue-500/20 to-purple-600/20 hover:from-blue-500/30 hover:to-purple-600/30 rounded-xl transition-all duration-300 hover-lift">
           <MessageCircle className="w-5 h-5 text-white/80" />
           <span className="text-white/80 font-medium">New Message</span>

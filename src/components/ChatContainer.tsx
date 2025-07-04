@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import MessageBubble from "./MessageBubble";
 import ChatInput from "./ChatInput";
 import ContactList from "./ContactList";
-import { Send, MoreVertical, Phone, Video } from "lucide-react";
+import { Send, MoreVertical, Phone, Video, Users } from "lucide-react";
 
 interface Message {
   id: string;
@@ -20,6 +20,8 @@ interface Contact {
   isOnline: boolean;
   lastMessage: string;
   timestamp: string;
+  isGroup?: boolean;
+  members?: Contact[];
 }
 
 const ChatContainer = () => {
@@ -47,20 +49,7 @@ const ChatContainer = () => {
     }
   ]);
 
-  const [selectedContact, setSelectedContact] = useState<Contact>({
-    id: "1",
-    name: "Sarah Wilson",
-    avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face",
-    isOnline: true,
-    lastMessage: "That sounds awesome!",
-    timestamp: "2 min"
-  });
-
-  const [newMessage, setNewMessage] = useState("");
-  const [isTyping, setIsTyping] = useState(false);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-
-  const contacts: Contact[] = [
+  const [contacts, setContacts] = useState<Contact[]>([
     {
       id: "1",
       name: "Sarah Wilson",
@@ -93,7 +82,21 @@ const ChatContainer = () => {
       lastMessage: "See you tomorrow",
       timestamp: "1 day"
     }
-  ];
+  ]);
+
+  const [selectedContact, setSelectedContact] = useState<Contact>({
+    id: "1",
+    name: "Sarah Wilson",
+    avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face",
+    isOnline: true,
+    lastMessage: "That sounds awesome!",
+    timestamp: "2 min"
+  });
+
+  const [newMessage, setNewMessage] = useState("");
+  const [isTyping, setIsTyping] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -102,6 +105,22 @@ const ChatContainer = () => {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  const handleCreateGroup = (name: string, members: Contact[]) => {
+    const newGroup: Contact = {
+      id: Date.now().toString(),
+      name,
+      avatar: "",
+      isOnline: true,
+      lastMessage: "Group created",
+      timestamp: "now",
+      isGroup: true,
+      members
+    };
+    
+    setContacts(prev => [newGroup, ...prev]);
+    setSelectedContact(newGroup);
+  };
 
   const handleSendMessage = (content: string) => {
     if (!content.trim()) return;
@@ -152,6 +171,7 @@ const ChatContainer = () => {
           contacts={contacts}
           selectedContact={selectedContact}
           onSelectContact={setSelectedContact}
+          onCreateGroup={handleCreateGroup}
         />
       </div>
 
@@ -161,19 +181,30 @@ const ChatContainer = () => {
         <div className="flex items-center justify-between p-4 border-b border-white/10">
           <div className="flex items-center space-x-3">
             <div className="relative">
-              <img
-                src={selectedContact.avatar}
-                alt={selectedContact.name}
-                className="w-10 h-10 rounded-full object-cover"
-              />
-              {selectedContact.isOnline && (
-                <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 border-2 border-white rounded-full online-pulse"></div>
+              {selectedContact.isGroup ? (
+                <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500/20 to-purple-600/20 border border-white/20 flex items-center justify-center">
+                  <Users className="w-5 h-5 text-white/80" />
+                </div>
+              ) : (
+                <>
+                  <img
+                    src={selectedContact.avatar}
+                    alt={selectedContact.name}
+                    className="w-10 h-10 rounded-full object-cover"
+                  />
+                  {selectedContact.isOnline && (
+                    <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 border-2 border-white rounded-full online-pulse"></div>
+                  )}
+                </>
               )}
             </div>
             <div>
               <h3 className="font-semibold text-white">{selectedContact.name}</h3>
               <p className="text-sm text-white/70">
-                {selectedContact.isOnline ? "Active now" : "Last seen recently"}
+                {selectedContact.isGroup 
+                  ? `${selectedContact.members?.length || 0} members`
+                  : selectedContact.isOnline ? "Active now" : "Last seen recently"
+                }
               </p>
             </div>
           </div>
