@@ -182,7 +182,7 @@ const ChatContainer = () => {
           <div className="flex items-center space-x-3">
             <div className="relative">
               {selectedContact.isGroup ? (
-                <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500/20 to-purple-600/20 border border-white/20 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-600/20 to-sky-500/20 border border-white/20 flex items-center justify-center">
                   <Users className="w-5 h-5 text-white/80" />
                 </div>
               ) : (

@@ -52,7 +52,7 @@ const ContactList = ({ contacts, selectedContact, onSelectContact, onCreateGroup
             placeholder="Search conversations..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-400/50 transition-all"
+            className="w-full pl-10 pr-4 py-2 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-sky-400/50 transition-all"
           />
         </div>
       </div>
@@ -64,13 +64,13 @@ const ContactList = ({ contacts, selectedContact, onSelectContact, onCreateGroup
             key={contact.id}
             onClick={() => onSelectContact(contact)}
             className={`p-4 cursor-pointer transition-all duration-200 hover:bg-white/5 ${
-              selectedContact.id === contact.id ? 'bg-white/10 border-r-2 border-blue-400' : ''
+              selectedContact.id === contact.id ? 'bg-white/10 border-r-2 border-sky-400' : ''
             }`}
           >
             <div className="flex items-center space-x-3">
               <div className="relative">
                 {contact.isGroup ? (
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-r from-blue-500/20 to-purple-600/20 border border-white/20 flex items-center justify-center">
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-r from-blue-600/20 to-sky-500/20 border border-white/20 flex items-center justify-center">
                     <Users className="w-6 h-6 text-white/80" />
                   </div>
                 ) : (
@@ -112,7 +112,7 @@ const ContactList = ({ contacts, selectedContact, onSelectContact, onCreateGroup
           contacts={contacts.filter(c => !c.isGroup)}
           onCreateGroup={onCreateGroup}
         />
-        <button className="w-full flex items-center justify-center space-x-2 p-3 bg-gradient-to-r from-blue-500/20 to-purple-600/20 hover:from-blue-500/30 hover:to-purple-600/30 rounded-xl transition-all duration-300 hover-lift">
+        <button className="w-full flex items-center justify-center space-x-2 p-3 bg-gradient-to-r from-blue-600/20 to-sky-500/20 hover:from-blue-600/30 hover:to-sky-500/30 rounded-xl transition-all duration-300 hover-lift">
           <MessageCircle className="w-5 h-5 text-white/80" />
           <span className="text-white/80 font-medium">New Message</span>
         </button>

@@ -43,7 +43,7 @@ const CreateGroupDialog = ({ contacts, onCreateGroup }: CreateGroupDialogProps) 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="w-full flex items-center justify-center space-x-2 p-3 bg-gradient-to-r from-blue-500/20 to-purple-600/20 hover:from-blue-500/30 hover:to-purple-600/30 rounded-xl transition-all duration-300 hover-lift">
+        <Button className="w-full flex items-center justify-center space-x-2 p-3 bg-gradient-to-r from-blue-600/20 to-sky-500/20 hover:from-blue-600/30 hover:to-sky-500/30 rounded-xl transition-all duration-300 hover-lift">
           <Users className="w-5 h-5 text-white/80" />
           <span className="text-white/80 font-medium">Create Group</span>
         </Button>
@@ -62,7 +62,7 @@ const CreateGroupDialog = ({ contacts, onCreateGroup }: CreateGroupDialogProps) 
               value={groupName}
               onChange={(e) => setGroupName(e.target.value)}
               placeholder="Enter group name..."
-              className="bg-white/10 border-white/20 text-white placeholder-white/50 focus:border-blue-400/50"
+              className="bg-white/10 border-white/20 text-white placeholder-white/50 focus:border-sky-400/50"
             />
           </div>
           
@@ -107,7 +107,7 @@ const CreateGroupDialog = ({ contacts, onCreateGroup }: CreateGroupDialogProps) 
             <Button
               onClick={handleCreate}
               disabled={!groupName.trim() || selectedMembers.length === 0}
-              className="flex-1 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700"
+              className="flex-1 bg-gradient-to-r from-blue-600 to-sky-500 hover:from-blue-700 hover:to-sky-600"
             >
               Create Group
             </Button>

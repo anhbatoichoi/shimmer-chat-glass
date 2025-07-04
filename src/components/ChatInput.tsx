@@ -27,7 +27,7 @@ const ChatInput = ({ value, onChange, onSend, placeholder = "Type a message..." 
 
   return (
     <div className={`glass-card rounded-2xl p-3 transition-all duration-300 ${
-      isFocused ? 'ring-2 ring-blue-400/50' : ''
+      isFocused ? 'ring-2 ring-sky-400/50' : ''
     }`}>
       <div className="flex items-end space-x-3">
         <button className="p-2 rounded-full hover:bg-white/10 transition-colors text-white/60 hover:text-white/80">
@@ -60,7 +60,7 @@ const ChatInput = ({ value, onChange, onSend, placeholder = "Type a message..." 
           {value.trim() ? (
             <button
               onClick={handleSend}
-              className="p-2 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 transition-all duration-300 hover:scale-105 text-white"
+              className="p-2 rounded-full bg-gradient-to-r from-blue-600 to-sky-500 hover:from-blue-700 hover:to-sky-600 transition-all duration-300 hover:scale-105 text-white"
             >
               <Send className="w-5 h-5" />
             </button>

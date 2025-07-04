@@ -23,7 +23,7 @@ const MessageBubble = ({ message, isConsecutive = false }: MessageBubbleProps) =
         <div
           className={`px-4 py-3 rounded-2xl glass-card hover-lift ${
             isOwn
-              ? 'bg-gradient-to-r from-blue-500/80 to-purple-600/80 text-white rounded-br-sm'
+              ? 'bg-gradient-to-r from-blue-600/80 to-sky-500/80 text-white rounded-br-sm'
               : 'bg-white/10 text-white rounded-bl-sm'
           }`}
         >
