@@ -1,16 +1,32 @@
-
-import { useState, KeyboardEvent } from "react";
+import { useState, KeyboardEvent, useEffect } from "react";
 import { Send, Paperclip, Smile, Mic } from "lucide-react";
 
 interface ChatInputProps {
   value: string;
   onChange: (value: string) => void;
+  onFocus: () => void;
+  onBlur: () => void;
   onSend: (message: string) => void;
   placeholder?: string;
 }
 
-const ChatInput = ({ value, onChange, onSend, placeholder = "Type a message..." }: ChatInputProps) => {
+const ChatInput = ({
+  value,
+  onFocus,
+  onBlur,
+  onChange,
+  onSend,
+  placeholder = "Type a message...",
+}: ChatInputProps) => {
   const [isFocused, setIsFocused] = useState(false);
+
+  useEffect(() => {
+    if (isFocused) {
+      onFocus();
+    } else {
+      onBlur();
+    }
+  }, [isFocused]);
 
   const handleKeyPress = (e: KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
@@ -26,14 +42,16 @@ const ChatInput = ({ value, onChange, onSend, placeholder = "Type a message..." 
   };
 
   return (
-    <div className={`glass-card rounded-2xl p-3 transition-all duration-300 ${
-      isFocused ? 'ring-2 ring-sky-400/50' : ''
-    }`}>
+    <div
+      className={`glass-card rounded-2xl p-3 transition-all duration-300 ${
+        isFocused ? "ring-2 ring-sky-400/50" : ""
+      }`}
+    >
       <div className="flex items-end space-x-3">
         <button className="p-2 rounded-full hover:bg-white/10 transition-colors text-white/60 hover:text-white/80">
           <Paperclip className="w-5 h-5" />
         </button>
-        
+
         <div className="flex-1 min-h-[40px] max-h-32">
           <textarea
             value={value}
@@ -45,9 +63,9 @@ const ChatInput = ({ value, onChange, onSend, placeholder = "Type a message..." 
             className="w-full bg-transparent text-white placeholder-white/50 resize-none outline-none text-sm leading-relaxed py-2"
             rows={1}
             style={{
-              minHeight: '24px',
-              maxHeight: '120px',
-              overflowY: value.split('\n').length > 3 ? 'scroll' : 'hidden'
+              minHeight: "24px",
+              maxHeight: "120px",
+              overflowY: value.split("\n").length > 3 ? "scroll" : "hidden",
             }}
           />
         </div>
@@ -56,7 +74,7 @@ const ChatInput = ({ value, onChange, onSend, placeholder = "Type a message..." 
           <button className="p-2 rounded-full hover:bg-white/10 transition-colors text-white/60 hover:text-white/80">
             <Smile className="w-5 h-5" />
           </button>
-          
+
           {value.trim() ? (
             <button
               onClick={handleSend}
